@@ -21,3 +21,5 @@ section .bss
   stack_bottom:
     resb 8192
   stack_top:
+
+extern kernel_main

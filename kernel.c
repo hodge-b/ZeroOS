@@ -1,10 +1,8 @@
-typedef unsigned int uint32_t;
-typedef unsigned short uint16_t;
-typedef unsigned char uint8_t;
+#include "types.h"
 
 typedef struct {
-  unsigned char value;
-  unsigned char color;
+  uint8_t value;
+  uint8_t color;
 } vga_entry_t;
 
 #define VGA_MEMORY 0xB8000

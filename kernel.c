@@ -1,4 +1,5 @@
 #include "types.h"
+#include "gdt.h"
 
 typedef struct {
   uint8_t value;
@@ -30,7 +31,16 @@ void kernel_main(void) {
     i++;
   }
 
+  gdt_layout_t gdt[3];
+  create_gdt_entry(&gdt[0], GDT_NULL_LIMIT, GDT_BASE, GDT_NULL_ACCESS_BYTE, GDT_NULL_FLAGS); // Null descriptor.
+  create_gdt_entry(&gdt[1], GDT_LIMIT, GDT_BASE, GDT_KERNEL_CODE_ACCESS_BYTE, GDT_FLAGS);    // Kernel code descriptor.
+  create_gdt_entry(&gdt[2], GDT_LIMIT, GDT_BASE, GDT_KERNEL_DATA_ACCESS_BYTE, GDT_FLAGS);    // Kernel data descriptor.
+
+  gdt_ptr gdt_register;
+  gdt_register.limit = (3 * 8) - 1;              // TODO: Move this into a length check utils func.
+  gdt_register.base = (uint32_t)&gdt;
+  gdt_load(&gdt_register);
+
   while (1) {}
 }
-
 
